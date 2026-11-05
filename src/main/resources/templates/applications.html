@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Банковские заявки</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+
+<body>
+
+<header class="header">
+    <h1>Bank Applications</h1>
+</header>
+
+<main class="container">
+
+    <section class="card">
+        <h2>Создание кредитной заявки</h2>
+
+        <form id="applicationForm">
+
+            <div class="form-group">
+                <label for="amount">Сумма кредита</label>
+                <input type="number"
+                       id="amount"
+                       min="0.01"
+                       step="0.01"
+                       placeholder="Введите сумму кредита"
+                       required>
+            </div>
+
+            <div class="form-group">
+                <label for="clientId">ID клиента</label>
+                <input type="number"
+                       id="clientId"
+                       min="1"
+                       placeholder="Введите ID клиента"
+                       required>
+            </div>
+
+            <button type="submit">Создать заявку</button>
+
+            <p id="message"></p>
+
+        </form>
+    </section>
+
+    <section class="card">
+        <h2>Список кредитных заявок</h2>
+
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Клиент</th>
+                    <th>Сумма</th>
+                    <th>Статус</th>
+                    <th>Балл</th>
+                    <th>Действие</th>
+                    <th>Дата создания</th>
+                </tr>
+                </thead>
+
+                <tbody id="applicationsTable">
+                <tr th:each="app : ${applications}">
+                    <td th:text="${app.id}"></td>
+                    <td th:text="${app.client.firstName + ' ' + app.client.lastName}"></td>
+                    <td th:text="${app.amount}"></td>
+                    <td>
+                    <span class="status-badge"
+                          th:text="${app.status}"
+                          th:classappend="${app.status == 'NEW'} ? ' status-new' : ''">
+                    </span>
+                    </td>
+                    <td class="score-cell">
+                        <span th:if="${app.score == null}" class="score-badge score-empty">
+                            Не рассчитан
+                        </span>
+                        <span th:if="${app.score == 10}" class="score-badge score-low">10</span>
+                        <span th:if="${app.score == 50}" class="score-badge score-medium">50</span>
+                        <span th:if="${app.score == 100}" class="score-badge score-high">100</span>
+                    </td>
+
+                    <td>
+                        <button type="button"
+                                class="calculate-button"
+                                th:attr="data-id=${app.id}">
+                            Рассчитать
+                        </button>
+                    </td>
+                    <td th:text="${app.createdAt}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+</main>
+
+<script th:src="@{/js/applications.js}"></script>
+
+</body>
+</html>
