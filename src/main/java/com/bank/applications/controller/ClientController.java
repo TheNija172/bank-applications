@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/clients")
 @RequiredArgsConstructor
@@ -19,5 +21,11 @@ public class ClientController {
     public ClientResponse getById(@PathVariable Long id) {
 
         return clientService.getById(id);
+    }
+
+    @GetMapping
+    public List<ClientResponse> getAll() {
+
+        return clientService.getAllJdbc();
     }
 }

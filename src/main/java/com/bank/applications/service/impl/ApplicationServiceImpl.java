@@ -4,6 +4,7 @@ import com.bank.applications.dto.ApplicationCreateRequest;
 import com.bank.applications.dto.ApplicationResponse;
 import com.bank.applications.entity.Application;
 import com.bank.applications.entity.Client;
+import com.bank.applications.exception.ResourceNotFoundException;
 import com.bank.applications.mapper.ApplicationMapper;
 import com.bank.applications.repository.ApplicationRepository;
 import com.bank.applications.repository.ClientRepository;
@@ -26,7 +27,7 @@ public class ApplicationServiceImpl implements ApplicationService {
     public ApplicationResponse create(ApplicationCreateRequest request) {
 
         Client client = clientRepository.findById(request.getClientId())
-                .orElseThrow(() -> new RuntimeException("Client not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Client not found"));
 
         Application application = applicationMapper.toEntity(request);
 
@@ -52,7 +53,7 @@ public class ApplicationServiceImpl implements ApplicationService {
     public Integer calculateScore(Long id) {
 
         Application application = applicationRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Application not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Application not found"));
 
         BigDecimal amount = application.getAmount();
 
