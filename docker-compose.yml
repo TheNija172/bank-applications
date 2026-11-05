@@ -1,16 +1,17 @@
 services:
   postgres:
-    image: postgres:17
-    container_name: bank-postgres
+    image: postgres:18.4
     environment:
-      POSTGRES_DB: bank_applications
-      POSTGRES_USER: bank_user
-      POSTGRES_PASSWORD: bank_password
+      POSTGRES_DB: mydatabase
+      POSTGRES_USER: myuser
+      POSTGRES_PASSWORD: secret
     ports:
-      - "5432:5432"
+      - "49542:5432"
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - postgres_data:/var/lib/postgresql
     restart: unless-stopped
 
 volumes:
   postgres_data:
+    external: true
+    name: 57f9b540e4b2f21c0ae9217496e23db08af15db1a088ce87b9628e27165db7fe
